@@ -21,3 +21,8 @@ class EmployeeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Employee
         fields = ['id', 'name', 'current_position', 'available_positions']
+
+    def validate(self, attrs):
+        if attrs['current_position'] not in attrs['available_positions']:
+            raise serializers.ValidationError("Текущая должность должна быть в списке доступных должностей.")
+        return attrs
